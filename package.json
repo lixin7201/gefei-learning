@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "哥飞公众号文章静态展示网站",
   "scripts": {
-    "build": "node build.js",
+    "build-data": "node build.js",
     "dev": "python3 -m http.server 8000 --directory public"
   },
   "devDependencies": {},

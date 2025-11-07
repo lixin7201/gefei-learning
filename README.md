@@ -41,10 +41,10 @@
 
 ### 1. 数据构建
 
-首次部署或更新Excel数据后，执行构建：
+首次部署或更新CSV数据后，执行构建：
 
 ```bash
-npm run build
+npm run build-data
 ```
 
 这会将CSV文件转换为JSON并保存到 `public/articles.json`
@@ -102,7 +102,7 @@ vercel --prod
 1. 将新的CSV文件放到正确路径：`../哥飞所有文章/公众号文章_全部数据_YYYYMMDD_HHMMSS.csv`
 2. 运行构建命令生成新的JSON：
    ```bash
-   npm run build
+   npm run build-data
    ```
 3. 提交并推送更改：
    ```bash

@@ -14,17 +14,14 @@ npm install -g vercel
 vercel login
 ```
 
-3. **构建数据**
-```bash
-npm run build
-```
-
-4. **部署到生产环境**
+3. **部署到生产环境**
 ```bash
 vercel --prod
 ```
 
 部署完成后，Vercel会提供一个访问链接。
+
+> **注意**：无需执行构建步骤，`articles.json` 已包含在仓库中
 
 ### 方法二：通过 Vercel Dashboard
 
@@ -45,12 +42,9 @@ git push -u origin main
 3. **在 Vercel 中导入项目**
    - 点击 "New Project"
    - 选择你的 Git 仓库
-   - 配置构建设置：
-     - **Build Command**: `npm run build`
-     - **Output Directory**: `public`
-     - **Install Command**: `npm install`
-
-4. **点击 Deploy**
+   - Vercel 会自动检测 `vercel.json` 配置
+   - 无需手动设置构建命令
+   - 直接点击 "Deploy"
 
 ### 方法三：直接拖拽部署
 
@@ -73,17 +67,13 @@ netlify deploy --prod --dir=public
    - 上传代码到 Git
    - 在 Netlify 中导入仓库
    - 设置：
-     - Build command: `npm run build`
+     - Build command: 留空（无需构建）
      - Publish directory: `public`
 
 ### GitHub Pages
 
-1. **构建项目**
-```bash
-npm run build
-```
+无需构建，直接部署 `public` 目录：
 
-2. **部署到 gh-pages 分支**
 ```bash
 git subtree push --prefix public origin gh-pages
 ```
@@ -125,11 +115,11 @@ vercel env add API_KEY
 ### 如果通过 Git 部署
 
 ```bash
-# 更新数据
-npm run build
+# 更新数据（本地执行）
+npm run build-data
 
 # 提交更改
-git add .
+git add public/articles.json
 git commit -m "Update articles data"
 git push
 ```
@@ -139,8 +129,8 @@ Vercel/Netlify 会自动检测到推送并重新部署。
 ### 如果通过 CLI 部署
 
 ```bash
-# 更新数据
-npm run build
+# 更新数据（本地执行）
+npm run build-data
 
 # 重新部署
 vercel --prod
@@ -172,11 +162,6 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Build
-        run: |
-          npm install
-          npm run build
-
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v20
         with:
@@ -186,25 +171,28 @@ jobs:
           vercel-args: '--prod'
 ```
 
+> **注意**：无需构建步骤，`articles.json` 已包含在仓库中
+
 ## 故障排查
 
 ### 部署失败
 
-1. 检查 `build.js` 中的CSV文件路径是否正确
-2. 确保 CSV 文件存在
-3. 查看构建日志中的错误信息
+1. 确保 `articles.json` 已提交到仓库
+2. 检查 `vercel.json` 配置是否正确
+3. 查看 Vercel 部署日志中的错误信息
 
 ### 页面空白
 
 1. 检查浏览器控制台是否有错误
-2. 确认 `articles.json` 是否生成
+2. 确认 `articles.json` 是否存在于 `public/` 目录
 3. 检查网络请求是否成功
 
 ### 数据不更新
 
-1. 确保执行了 `npm run build`
-2. 清除浏览器缓存
-3. 在 Vercel 中触发重新部署
+1. 本地执行 `npm run build-data` 生成新的 JSON
+2. 提交并推送 `public/articles.json`
+3. 清除浏览器缓存
+4. 在 Vercel 中触发重新部署
 
 ## 性能优化建议
 
