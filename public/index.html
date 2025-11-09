@@ -56,8 +56,14 @@
           <thead>
             <tr>
               <th class="col-id">序号</th>
-              <th class="col-title">标题</th>
-              <th class="col-date">发布日期</th>
+              <th class="col-title sortable" data-sort="title" onclick="toggleSort('title')">
+                标题
+                <span class="sort-icon"></span>
+              </th>
+              <th class="col-date sortable sort-desc" data-sort="date" onclick="toggleSort('date')">
+                发布日期
+                <span class="sort-icon"></span>
+              </th>
             </tr>
           </thead>
           <tbody id="articlesTableBody">

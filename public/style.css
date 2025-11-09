@@ -384,6 +384,41 @@ body {
   white-space: nowrap;
 }
 
+/* 可排序的列 */
+.sortable {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  transition: background-color 0.2s;
+}
+
+.sortable:hover {
+  background: var(--bg-hover);
+}
+
+.sortable .sort-icon {
+  display: inline-block;
+  margin-left: 0.5rem;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  opacity: 0.3;
+  vertical-align: middle;
+}
+
+/* 升序图标 */
+.sortable.sort-asc .sort-icon {
+  border-bottom: 6px solid var(--text-primary);
+  opacity: 1;
+}
+
+/* 降序图标 */
+.sortable.sort-desc .sort-icon {
+  border-top: 6px solid var(--text-primary);
+  opacity: 1;
+}
+
 .articles-table td {
   padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--border-color);

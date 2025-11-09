@@ -7,6 +7,10 @@ let perPage = 20; // 每页显示数量
 // 筛选条件
 let keyword = '';
 
+// 排序状态
+let sortBy = 'date'; // 'date' 或 'title'
+let sortOrder = 'desc'; // 'asc' 或 'desc'
+
 // ===== 工具函数 =====
 
 /**
@@ -83,18 +87,71 @@ function applyFilters() {
     filteredArticles = [...allArticles];
   }
 
-  // 按发布时间倒序排序
-  filteredArticles.sort((a, b) => {
-    return new Date(b.published_at) - new Date(a.published_at);
-  });
+  // 应用排序
+  applySorting();
 
   // 重置到第一页
   currentPage = 1;
 
   // 更新UI
   updateFilterStatus();
+  updateSortIndicators();
   renderTable();
   renderPagination();
+}
+
+/**
+ * 应用排序
+ */
+function applySorting() {
+  filteredArticles.sort((a, b) => {
+    let comparison = 0;
+
+    if (sortBy === 'title') {
+      // 按标题排序（中文+英文）
+      comparison = a.title.localeCompare(b.title, 'zh-CN');
+    } else {
+      // 按日期排序
+      comparison = new Date(a.published_at) - new Date(b.published_at);
+    }
+
+    // 应用升序或降序
+    return sortOrder === 'asc' ? comparison : -comparison;
+  });
+}
+
+/**
+ * 切换排序
+ */
+function toggleSort(column) {
+  if (sortBy === column) {
+    // 如果点击同一列，切换升序/降序
+    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+  } else {
+    // 如果点击不同列，设置新列并默认降序
+    sortBy = column;
+    sortOrder = 'desc';
+  }
+
+  // 重新应用筛选（包含排序）
+  applyFilters();
+}
+
+/**
+ * 更新排序指示器
+ */
+function updateSortIndicators() {
+  // 移除所有排序类
+  document.querySelectorAll('.sortable').forEach(th => {
+    th.classList.remove('sort-asc', 'sort-desc');
+  });
+
+  // 添加当前排序类
+  const activeColumn = sortBy === 'title' ? 'title' : 'date';
+  const thElement = document.querySelector(`.sortable[data-sort="${activeColumn}"]`);
+  if (thElement) {
+    thElement.classList.add(sortOrder === 'asc' ? 'sort-asc' : 'sort-desc');
+  }
 }
 
 /**
